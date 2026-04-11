@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { useCallback, useMemo, useState } from "react"
 import { User } from "lucide-react"
 import { AISearch } from "@/components/ai-search"
@@ -59,9 +60,12 @@ export default function DirectoryClient({ profiles }: DirectoryClientProps) {
             >
               <div className="mb-4 flex items-center gap-3">
                 {profile.avatar_url ? (
-                  <img
+                  <Image
                     src={profile.avatar_url}
                     alt={`${profile.full_name ?? "Alumni"} avatar`}
+                    width={48}
+                    height={48}
+                    unoptimized
                     className="h-12 w-12 rounded-full border border-emerald-500/40 object-cover"
                   />
                 ) : (
