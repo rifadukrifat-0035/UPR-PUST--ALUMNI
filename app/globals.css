@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "leaflet/dist/leaflet.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -127,4 +128,12 @@
   html {
     @apply font-sans;
   }
+}
+
+.leaflet-popup-content-wrapper {
+  border: 1px solid rgb(16 185 129 / 0.35);
+}
+
+.leaflet-popup-tip {
+  background: rgb(255 255 255);
 }
