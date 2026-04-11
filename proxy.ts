@@ -1,7 +1,7 @@
-import { createServerClient } from "@supabase/auth-helpers-nextjs"
+import { createServerClient } from "@supabase/ssr"
 import { NextResponse, type NextRequest } from "next/server"
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const response = NextResponse.next({
     request: {
       headers: request.headers,
@@ -25,7 +25,6 @@ export async function middleware(request: NextRequest) {
     },
   )
 
-  // Refresh auth session on every matched request.
   await supabase.auth.getUser()
 
   return response
