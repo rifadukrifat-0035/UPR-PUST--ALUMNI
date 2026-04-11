@@ -50,8 +50,8 @@ export default function AuthPage() {
       setTimeout(() => {
         router.push("/dashboard")
       }, 1500)
-    } catch (err: any) {
-      setError(err.message || "An error occurred during login")
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "An error occurred during login")
     } finally {
       setLoading(false)
     }
@@ -97,8 +97,8 @@ export default function AuthPage() {
       setTimeout(() => {
         router.push("/dashboard")
       }, 2000)
-    } catch (err: any) {
-      setError(err.message || "An error occurred during sign up")
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "An error occurred during sign up")
     } finally {
       setLoading(false)
     }

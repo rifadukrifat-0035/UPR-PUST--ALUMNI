@@ -1,9 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Sparkles, User, MapPin, GraduationCap } from "lucide-react";
+import { Search, Sparkles, User, MapPin } from "lucide-react";
 
-export default function AISearch({ initialAlumni }: { initialAlumni: any[] }) {
+type Alumni = {
+  id: string;
+  full_name: string;
+  batch_year: number;
+  location_name?: string | null;
+  bio?: string | null;
+};
+
+export default function AISearch({ initialAlumni }: { initialAlumni: Alumni[] }) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState(initialAlumni);
   const [isLoading, setIsLoading] = useState(false);
@@ -28,7 +36,7 @@ export default function AISearch({ initialAlumni }: { initialAlumni: any[] }) {
           messages: [
             {
               role: "system",
-              content: `You are an assistant for a university alumni portal. 
+              content: `You are an assistant for a university alumni portal.
               Given the following alumni data in JSON format, filter and return ONLY a JSON array of IDs that match the user's natural language request. 
               Data: ${JSON.stringify(initialAlumni.map(a => ({ id: a.id, name: a.full_name, batch: a.batch_year, location: a.location_name, bio: a.bio })))}`
             },
@@ -41,12 +49,12 @@ export default function AISearch({ initialAlumni }: { initialAlumni: any[] }) {
       const data = await response.json();
       const matchedIds = JSON.parse(data.choices[0].message.content).ids;
       
-      const filtered = initialAlumni.filter(alumnus => matchedIds.includes(alumnus.id));
+      const filtered = initialAlumni.filter((alumnus) => matchedIds.includes(alumnus.id));
       setResults(filtered);
     } catch (error) {
       console.error("AI Search Error:", error);
       // Fallback: Simple keyword search if AI fails
-      const fallback = initialAlumni.filter(a => 
+      const fallback = initialAlumni.filter((a) =>
         a.full_name.toLowerCase().includes(query.toLowerCase()) || 
         a.batch_year.toString().includes(query)
       );
@@ -93,7 +101,7 @@ export default function AISearch({ initialAlumni }: { initialAlumni: any[] }) {
               <MapPin size={14} /> {alumnus.location_name || "Location hidden"}
             </div>
             <p className="text-slate-500 text-sm line-clamp-2 italic">
-              "{alumnus.bio || "No bio available."}"
+              &quot;{alumnus.bio || "No bio available."}&quot;
             </p>
           </div>
         ))}

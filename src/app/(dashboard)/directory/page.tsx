@@ -1,13 +1,8 @@
-import { createServerClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
-import AISearch from "@/components/AISearch";
+import { createServerComponentClient } from "@/src/lib/supabase/server";
+import AISearch from "@/src/components/AISearch";
 
 export default async function DirectoryPage() {
-  const supabase = createServerClient({
-    supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    cookies: cookies,
-  });
+  const supabase = await createServerComponentClient();
 
   // শুধুমাত্র approved অ্যালুমনাইদের ডাটা ফেচ করা
   const { data: alumni, error } = await supabase

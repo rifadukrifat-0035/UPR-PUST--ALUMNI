@@ -56,8 +56,8 @@ export default function VerificationPendingPage() {
           router.replace("/dashboard")
           return
         }
-      } catch (err: any) {
-        setError(err.message || "Failed to check verification status")
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : "Failed to check verification status")
       } finally {
         setLoadingSession(false)
       }
@@ -123,9 +123,9 @@ export default function VerificationPendingPage() {
 
       setSuccess("Document uploaded! Admin will verify soon.")
       setSelectedFile(null)
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.log("[verification flow error]", err)
-      setError(err.message || "Upload failed. Please try again.")
+      setError(err instanceof Error ? err.message : "Upload failed. Please try again.")
     } finally {
       setUploading(false)
     }
