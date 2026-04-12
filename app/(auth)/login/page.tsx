@@ -46,7 +46,7 @@ export default function AuthPage() {
 
       setSuccess("Login successful! Redirecting...")
       setTimeout(() => {
-        router.push("/dashboard")
+        router.push("/directory")
       }, 1200)
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "An error occurred during login")

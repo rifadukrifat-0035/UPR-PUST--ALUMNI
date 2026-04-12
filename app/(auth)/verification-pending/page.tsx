@@ -53,7 +53,7 @@ export default function VerificationPendingPage() {
         }
 
         if (profile?.status === "approved") {
-          router.replace("/dashboard")
+          router.replace("/directory")
           return
         }
       } catch (err: unknown) {
