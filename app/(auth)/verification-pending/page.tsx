@@ -133,7 +133,7 @@ export default function VerificationPendingPage() {
 
   if (loadingSession) {
     return (
-      <div className="flex min-h-[70vh] flex-col items-center justify-center gap-3 text-slate-300">
+      <div className="flex min-h-[70vh] flex-col items-center justify-center gap-3 text-zinc-300">
         <Loader2 className="h-6 w-6 animate-spin text-emerald-500" />
         <p>Loading...</p>
       </div>
@@ -143,10 +143,10 @@ export default function VerificationPendingPage() {
   if (!session?.user?.id) {
     return (
       <div className="mx-auto max-w-xl">
-        <Card className="border-slate-800 bg-slate-900 text-slate-200 shadow-xl">
+        <Card className="border-zinc-800 bg-zinc-900 text-zinc-200 shadow-xl">
           <CardHeader className="space-y-3">
-            <CardTitle className="text-2xl text-slate-100">Account Verification Required</CardTitle>
-            <CardDescription className="text-slate-400">
+            <CardTitle className="text-2xl text-zinc-100">Account Verification Required</CardTitle>
+            <CardDescription className="text-zinc-400">
               You need to sign in first to upload your verification document.
             </CardDescription>
           </CardHeader>
@@ -154,7 +154,7 @@ export default function VerificationPendingPage() {
             <Button
               type="button"
               onClick={() => router.push("/login")}
-              className="w-full bg-emerald-600 font-semibold text-slate-950 hover:bg-emerald-500"
+              className="w-full bg-emerald-600 font-semibold text-zinc-950 hover:bg-emerald-500"
             >
               Go to Login
             </Button>
@@ -166,14 +166,14 @@ export default function VerificationPendingPage() {
 
   return (
     <div className="mx-auto max-w-xl">
-      <Card className="border-slate-800 bg-slate-900 text-slate-200 shadow-xl">
+      <Card className="border-zinc-800 bg-zinc-900 text-zinc-200 shadow-xl">
         <CardHeader className="space-y-3">
           <div className="flex items-center gap-2 text-emerald-400">
             <ShieldAlert className="h-5 w-5" />
             <span className="text-sm font-medium uppercase tracking-wide">Verification Pending</span>
           </div>
-          <CardTitle className="text-2xl text-slate-100">Account Verification Required</CardTitle>
-          <CardDescription className="text-slate-400">
+          <CardTitle className="text-2xl text-zinc-100">Account Verification Required</CardTitle>
+          <CardDescription className="text-zinc-400">
             Your account is pending approval. Upload a Student ID or Certificate so our team can
             review it faster.
           </CardDescription>
@@ -197,24 +197,24 @@ export default function VerificationPendingPage() {
 
           <form onSubmit={handleUpload} className="space-y-4">
             <div className="space-y-2">
-              <label htmlFor="verification-file" className="text-sm font-medium text-slate-300">
+              <label htmlFor="verification-file" className="text-sm font-medium text-zinc-300">
                 Upload Document
               </label>
-              <div className="rounded-md border border-slate-700 bg-slate-950/70 p-3">
+              <div className="rounded-md border border-zinc-700 bg-black/70 p-3">
                 <Input
                   id="verification-file"
                   type="file"
                   accept=".pdf,.png,.jpg,.jpeg"
                   onChange={(e) => setSelectedFile(e.target.files?.[0] ?? null)}
                 />
-                <p className="mt-2 text-xs text-slate-400">Accepted: PDF, PNG, JPG, JPEG</p>
+                <p className="mt-2 text-xs text-zinc-400">Accepted: PDF, PNG, JPG, JPEG</p>
               </div>
             </div>
 
             <Button
               type="submit"
               disabled={uploading || !selectedFile}
-              className="w-full bg-emerald-600 font-semibold text-slate-950 hover:bg-emerald-500"
+              className="w-full bg-emerald-600 font-semibold text-zinc-950 hover:bg-emerald-500"
             >
               {uploading ? (
                 <>

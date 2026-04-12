@@ -93,14 +93,14 @@ export default async function AdminVerificationPage() {
   if (profile?.role !== "admin") {
     return (
       <div className="mx-auto max-w-2xl">
-        <Card className="border border-emerald-500/40 bg-slate-900/50 text-slate-200">
+        <Card className="border border-emerald-500/40 bg-zinc-900/50 text-zinc-200">
           <CardHeader className="space-y-3">
             <div className="flex items-center gap-2 text-emerald-400">
               <Lock className="h-5 w-5" />
               <span className="text-sm font-medium uppercase tracking-wide">Restricted</span>
             </div>
-            <CardTitle className="text-2xl text-slate-100">Access Denied</CardTitle>
-            <CardDescription className="text-slate-400">
+            <CardTitle className="text-2xl text-zinc-100">Access Denied</CardTitle>
+            <CardDescription className="text-zinc-400">
               You are not authorized to access the admin verification dashboard.
             </CardDescription>
           </CardHeader>
@@ -123,24 +123,24 @@ export default async function AdminVerificationPage() {
   const pendingProfiles: PendingProfile[] = (data ?? []) as PendingProfile[]
 
   return (
-    <section className="space-y-6 rounded-xl bg-slate-950 p-1">
+    <section className="space-y-6 rounded-xl bg-black p-1">
       <div className="space-y-2">
         <div className="flex items-center gap-2 text-emerald-400">
           <ShieldCheck className="h-5 w-5" />
           <span className="text-sm font-medium uppercase tracking-wide">Admin Panel</span>
         </div>
-        <h1 className="text-3xl font-semibold text-slate-100">Admin Verification Dashboard</h1>
-        <p className="text-slate-400">Review pending alumni verification submissions.</p>
+        <h1 className="text-3xl font-semibold text-zinc-100">Admin Verification Dashboard</h1>
+        <p className="text-zinc-400">Review pending alumni verification submissions.</p>
       </div>
 
-      <Card className="border border-slate-800 bg-slate-900/50 text-slate-200">
+      <Card className="border border-zinc-800 bg-zinc-900/50 text-zinc-200">
         <CardContent className="p-0">
           {pendingProfiles.length === 0 ? (
-            <div className="p-8 text-center text-slate-400">No pending profiles found.</div>
+            <div className="p-8 text-center text-zinc-400">No pending profiles found.</div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
-                <thead className="border-b border-slate-800 text-slate-300">
+                <thead className="border-b border-zinc-800 text-zinc-300">
                   <tr>
                     <th className="px-4 py-3 font-medium">Name</th>
                     <th className="px-4 py-3 font-medium">Batch Year</th>
@@ -150,9 +150,9 @@ export default async function AdminVerificationPage() {
                 </thead>
                 <tbody>
                   {pendingProfiles.map((profile) => (
-                    <tr key={profile.id} className="border-b border-slate-800/70">
-                      <td className="px-4 py-3 text-slate-200">{profile.full_name || "Unknown"}</td>
-                      <td className="px-4 py-3 text-slate-300">{profile.batch_year ?? "N/A"}</td>
+                    <tr key={profile.id} className="border-b border-zinc-800/70">
+                      <td className="px-4 py-3 text-zinc-200">{profile.full_name || "Unknown"}</td>
+                      <td className="px-4 py-3 text-zinc-300">{profile.batch_year ?? "N/A"}</td>
                       <td className="px-4 py-3">
                         {profile.verification_url ? (
                           <a
@@ -165,7 +165,7 @@ export default async function AdminVerificationPage() {
                             View Document
                           </a>
                         ) : (
-                          <span className="text-slate-500">No document</span>
+                          <span className="text-zinc-500">No document</span>
                         )}
                       </td>
                       <td className="px-4 py-3">
@@ -173,7 +173,7 @@ export default async function AdminVerificationPage() {
                           <input type="hidden" name="profileId" value={profile.id} />
                           <Button
                             type="submit"
-                            className="h-8 bg-emerald-500 px-3 text-xs font-semibold text-slate-950 hover:bg-emerald-400"
+                            className="h-8 bg-emerald-500 px-3 text-xs font-semibold text-zinc-950 hover:bg-emerald-400"
                           >
                             <BadgeCheck className="h-4 w-4" />
                             Approve

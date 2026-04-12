@@ -135,8 +135,8 @@ export default function AlumniMapClient() {
   if (isLoading) {
     return (
       <section className="space-y-4">
-        <h1 className="text-3xl font-semibold text-slate-100">Alumni Map</h1>
-        <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-8 text-center text-slate-300">
+        <h1 className="text-3xl font-semibold text-zinc-100">Alumni Map</h1>
+        <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-8 text-center text-zinc-300">
           Loading approved alumni locations...
         </div>
       </section>
@@ -146,7 +146,7 @@ export default function AlumniMapClient() {
   if (error) {
     return (
       <section className="space-y-4">
-        <h1 className="text-3xl font-semibold text-slate-100">Alumni Map</h1>
+        <h1 className="text-3xl font-semibold text-zinc-100">Alumni Map</h1>
         <div className="rounded-xl border border-red-500/30 bg-red-950/30 p-4 text-red-200">
           {error}
         </div>
@@ -157,11 +157,11 @@ export default function AlumniMapClient() {
   return (
     <section className="space-y-4">
       <div>
-        <h1 className="text-3xl font-semibold text-slate-100">Alumni Map</h1>
-        <p className="text-slate-400">Explore approved URP alumni around the world.</p>
+        <h1 className="text-3xl font-semibold text-zinc-100">Alumni Map</h1>
+        <p className="text-zinc-400">Explore approved URP alumni around the world.</p>
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-slate-800 bg-slate-900/50">
+      <div className="overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900/50">
         <MapContainer center={center} zoom={4} className="h-[560px] w-full" scrollWheelZoom>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
@@ -175,7 +175,7 @@ export default function AlumniMapClient() {
               {...(emeraldIcon ? { icon: emeraldIcon } : {})}
             >
               <Popup>
-                <div className="space-y-1 text-slate-900">
+                <div className="space-y-1 text-zinc-900">
                   <p className="font-semibold text-emerald-500">{profile.full_name ?? "Unknown Alumni"}</p>
                   <p>
                     <span className="font-medium">Batch:</span> {profile.batch_year ?? "N/A"}
@@ -191,7 +191,7 @@ export default function AlumniMapClient() {
         </MapContainer>
       </div>
 
-      <p className="text-sm text-slate-400">
+      <p className="text-sm text-zinc-400">
         Showing {profiles.length} approved alumni with map coordinates.
       </p>
     </section>

@@ -76,16 +76,16 @@ export function AISearch({ profiles, onResultIdsChange }: SmartSearchProps) {
 
   return (
     <div className="space-y-2">
-      <div className="relative max-w-2xl rounded-xl border border-emerald-500/60 bg-slate-900/80 p-1 shadow-[0_0_18px_rgba(16,185,129,0.35)]">
+      <div className="relative max-w-2xl rounded-xl border border-emerald-500/60 bg-zinc-900/80 p-1 shadow-[0_0_18px_rgba(16,185,129,0.35)]">
         <div className="pointer-events-none absolute -inset-px rounded-xl border border-emerald-400/35" />
 
-        <Sparkles className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-emerald-400" />
+        <Sparkles className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -tranzinc-y-1/2 text-emerald-400" />
         <Input
           type="text"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           placeholder="Ask naturally: Who lives in Dhaka and is from 2018 batch?"
-          className="h-11 border-0 bg-transparent pl-10 text-slate-100 placeholder:text-slate-500 focus-visible:ring-2 focus-visible:ring-emerald-500"
+          className="h-11 border-0 bg-transparent pl-10 text-zinc-100 placeholder:text-zinc-500 focus-visible:ring-2 focus-visible:ring-emerald-500"
         />
       </div>
 

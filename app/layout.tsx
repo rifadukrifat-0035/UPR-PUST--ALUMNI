@@ -21,14 +21,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className={`${inter.variable} h-full antialiased`}>
-      <body className="min-h-full bg-slate-950 text-slate-100">
+      <body className="min-h-full bg-black text-zinc-100">
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
-          <div className="min-h-full bg-slate-950">
+          <div className="min-h-full bg-black">
             <Navbar />
             <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6">{children}</main>
           </div>

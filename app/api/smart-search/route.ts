@@ -8,6 +8,35 @@ type AlumniInput = {
   bio: string | null
 }
 
+function localSearchIds(query: string, alumni: AlumniInput[]): string[] {
+  const normalized = query.trim().toLowerCase()
+  if (!normalized) {
+    return []
+  }
+
+  const tokens = normalized.split(/\s+/).filter(Boolean)
+
+  return alumni
+    .filter((person) => {
+      const haystack = [
+        person.full_name ?? "",
+        person.location ?? "",
+        person.bio ?? "",
+        person.batch_year != null ? String(person.batch_year) : "",
+      ]
+        .join(" ")
+        .toLowerCase()
+
+      if (!haystack) {
+        return false
+      }
+
+      // Match when all query words are present somewhere in the profile text.
+      return tokens.every((token) => haystack.includes(token))
+    })
+    .map((person) => String(person.id))
+}
+
 function extractIds(content: string): string[] {
   try {
     const parsed = JSON.parse(content)
@@ -36,20 +65,19 @@ function extractIds(content: string): string[] {
 
 export async function POST(request: Request) {
   try {
-    const groqApiKey = process.env.GROQ_API_KEY ?? process.env.NEXT_PUBLIC_GROQ_API_KEY
-    if (!groqApiKey) {
-      return NextResponse.json(
-        { error: "Missing GROQ_API_KEY environment variable." },
-        { status: 500 },
-      )
-    }
-
     const body = (await request.json()) as { query?: string; alumni?: AlumniInput[] }
     const query = (body.query ?? "").trim()
     const alumni = Array.isArray(body.alumni) ? body.alumni : []
 
     if (!query) {
       return NextResponse.json({ ids: [] })
+    }
+
+    const groqApiKey = process.env.GROQ_API_KEY ?? process.env.NEXT_PUBLIC_GROQ_API_KEY
+    const fallbackIds = localSearchIds(query, alumni)
+
+    if (!groqApiKey) {
+      return NextResponse.json({ ids: fallbackIds, source: "fallback" })
     }
 
     const cleanedAlumni = alumni.map((item) => ({
@@ -83,7 +111,7 @@ export async function POST(request: Request) {
     if (!groqResponse.ok) {
       const failureText = await groqResponse.text()
       console.error("[smart-search][groq error]", failureText)
-      return NextResponse.json({ error: "AI provider request failed." }, { status: 502 })
+      return NextResponse.json({ ids: fallbackIds, source: "fallback" })
     }
 
     const completion = (await groqResponse.json()) as {
@@ -93,9 +121,9 @@ export async function POST(request: Request) {
     const content = completion.choices?.[0]?.message?.content ?? "[]"
     const ids = extractIds(content)
 
-    return NextResponse.json({ ids })
+    return NextResponse.json({ ids: ids.length > 0 ? ids : fallbackIds, source: "ai" })
   } catch (error) {
     console.error("[smart-search]", error)
-    return NextResponse.json({ error: "Failed to process smart search." }, { status: 500 })
+    return NextResponse.json({ ids: [], error: "Failed to process smart search." }, { status: 500 })
   }
 }
