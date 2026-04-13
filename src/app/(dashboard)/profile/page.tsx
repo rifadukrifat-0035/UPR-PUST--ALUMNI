@@ -33,7 +33,6 @@ export default function MyProfilePage() {
 	const [lat, setLat] = useState<number | null>(null)
 	const [lng, setLng] = useState<number | null>(null)
 
-	const [userId, setUserId] = useState<string | null>(null)
 	const [isFetching, setIsFetching] = useState(true)
 	const [isSubmitting, setIsSubmitting] = useState(false)
 	const [isGeocoding, setIsGeocoding] = useState(false)
@@ -69,8 +68,6 @@ export default function MyProfilePage() {
 				}
 
 				if (!isMounted) return
-
-				setUserId(user.id)
 
 				const profile = (data ?? null) as ProfileRow | null
 				setFullName(profile?.full_name ?? "")
@@ -111,7 +108,12 @@ export default function MyProfilePage() {
 		setErrorMessage(null)
 		setSuccessMessage(null)
 
-		if (!userId) {
+		const {
+			data: { user },
+			error: userError,
+		} = await supabase.auth.getUser()
+
+		if (userError || !user?.id) {
 			setErrorMessage("User session not found. Please log in again.")
 			return
 		}
@@ -140,21 +142,23 @@ export default function MyProfilePage() {
 			if (cleanedLocation) {
 				setIsGeocoding(true)
 
-				const response = await fetch(
+				const geoRes = await fetch(
 					`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(cleanedLocation)}`,
 					{
 						headers: {
 							Accept: "application/json",
+							"User-Agent": "URP-Connect-App",
 						},
 						cache: "no-store",
 					},
 				)
 
-				if (!response.ok) {
-					throw new Error(`Geocoding request failed with status ${response.status}`)
+				if (!geoRes.ok) {
+					throw new Error(`Geocoding request failed with status ${geoRes.status}`)
 				}
 
-				const geoResults = (await response.json()) as NominatimResult[]
+				const geoResults = (await geoRes.json()) as NominatimResult[]
+				console.log("[profile geocode][nominatim response]", geoResults)
 				const topResult = geoResults[0]
 
 				if (!topResult?.lat || !topResult?.lon) {
@@ -182,9 +186,10 @@ export default function MyProfilePage() {
 					lat: nextLat,
 					lng: nextLng,
 				})
-				.eq("id", userId)
+				.eq("id", user.id)
 
 			if (error) {
+				console.log("[profile update][supabase error]", error)
 				throw new Error(error.message)
 			}
 
