@@ -9,7 +9,7 @@ type AlumniProfile = {
   id: string
   full_name: string | null
   batch_year: number | null
-  location: string | null
+  location_name: string | null
   bio: string | null
   avatar_url: string | null
 }
@@ -82,7 +82,7 @@ export default function DirectoryClient({ profiles }: DirectoryClientProps) {
                     Batch {profile.batch_year ?? "N/A"}
                   </p>
                   <p className="text-xs text-zinc-400">
-                    {profile.location?.trim() || "Location not provided"}
+                    {profile.location_name?.trim() || "Location not provided"}
                   </p>
                 </div>
               </div>

@@ -8,7 +8,7 @@ type SmartSearchProfile = {
   id: string
   full_name: string | null
   batch_year: number | null
-  location: string | null
+  location_name: string | null
   bio: string | null
 }
 

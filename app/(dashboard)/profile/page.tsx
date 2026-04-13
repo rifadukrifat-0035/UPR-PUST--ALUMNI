@@ -7,7 +7,7 @@ type ProfileRow = {
   full_name: string | null
   bio: string | null
   batch_year: number | null
-  location: string | null
+  location_name: string | null
   lat: number | null
   lng: number | null
 }
@@ -30,7 +30,7 @@ export default async function MyProfilePage() {
 
   const { data: profileData, error: profileError } = await supabase
     .from("profiles")
-    .select("full_name, bio, batch_year, location, lat, lng")
+    .select("full_name, bio, batch_year, location_name, lat, lng")
     .eq("id", session.user.id)
     .maybeSingle()
 
@@ -55,19 +55,46 @@ export default async function MyProfilePage() {
 
     const fullName = String(formData.get("full_name") ?? "").trim()
     const bio = String(formData.get("bio") ?? "").trim()
-    const location = String(formData.get("location") ?? "").trim()
+    const currentCity = String(formData.get("current_city") ?? "").trim()
 
     const rawBatchYear = String(formData.get("batch_year") ?? "").trim()
     const parsedBatchYear = rawBatchYear ? Number.parseInt(rawBatchYear, 10) : Number.NaN
     const batchYear = Number.isFinite(parsedBatchYear) ? parsedBatchYear : null
 
-    const rawLat = String(formData.get("lat") ?? "").trim()
-    const rawLng = String(formData.get("lng") ?? "").trim()
-    const parsedLat = rawLat ? Number.parseFloat(rawLat) : Number.NaN
-    const parsedLng = rawLng ? Number.parseFloat(rawLng) : Number.NaN
+    let lat: number | null = null
+    let lng: number | null = null
 
-    const lat = Number.isFinite(parsedLat) ? parsedLat : null
-    const lng = Number.isFinite(parsedLng) ? parsedLng : null
+    if (currentCity) {
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=${encodeURIComponent(currentCity)}`,
+          {
+            headers: {
+              Accept: "application/json",
+              "User-Agent": "UPR-PUST-ALUMNI/1.0",
+            },
+            cache: "no-store",
+          },
+        )
+
+        if (!response.ok) {
+          throw new Error(`Geocoding failed with status ${response.status}`)
+        }
+
+        const results = (await response.json()) as Array<{ lat?: string; lon?: string }>
+        const matched = results[0]
+
+        if (matched?.lat && matched?.lon) {
+          const parsedLat = Number.parseFloat(matched.lat)
+          const parsedLng = Number.parseFloat(matched.lon)
+
+          lat = Number.isFinite(parsedLat) ? parsedLat : null
+          lng = Number.isFinite(parsedLng) ? parsedLng : null
+        }
+      } catch (error) {
+        console.error("[profile geocode error]", error)
+      }
+    }
 
     const { error } = await supabase.from("profiles").upsert(
       {
@@ -75,7 +102,7 @@ export default async function MyProfilePage() {
         full_name: fullName || null,
         bio: bio || null,
         batch_year: batchYear,
-        location: location || null,
+        location_name: currentCity || null,
         lat,
         lng,
       },
@@ -109,9 +136,7 @@ export default async function MyProfilePage() {
             fullName: profile?.full_name ?? "",
             bio: profile?.bio ?? "",
             batchYear: profile?.batch_year ? String(profile.batch_year) : "",
-            location: profile?.location ?? "",
-            lat: profile?.lat !== null && profile?.lat !== undefined ? String(profile.lat) : "",
-            lng: profile?.lng !== null && profile?.lng !== undefined ? String(profile.lng) : "",
+            currentCity: profile?.location_name ?? "",
           }}
           updateProfile={updateProfile}
         />

@@ -4,7 +4,7 @@ type AlumniInput = {
   id: string
   full_name: string | null
   batch_year: number | null
-  location: string | null
+  location_name: string | null
   bio: string | null
 }
 
@@ -20,7 +20,7 @@ function localSearchIds(query: string, alumni: AlumniInput[]): string[] {
     .filter((person) => {
       const haystack = [
         person.full_name ?? "",
-        person.location ?? "",
+        person.location_name ?? "",
         person.bio ?? "",
         person.batch_year != null ? String(person.batch_year) : "",
       ]
@@ -84,7 +84,7 @@ export async function POST(request: Request) {
       id: String(item.id),
       full_name: item.full_name,
       batch_year: item.batch_year,
-      location: item.location,
+      location_name: item.location_name,
       bio: item.bio,
     }))
 

@@ -29,7 +29,7 @@ type AlumniProfile = {
   id: string
   full_name: string | null
   batch_year: number | null
-  location: string | null
+  location_name: string | null
   lat: number
   lng: number
 }
@@ -51,7 +51,7 @@ export default function AlumniMapClient() {
 
         const { data, error: queryError } = await supabase
           .from("profiles")
-          .select("id, full_name, batch_year, location, lat, lng")
+          .select("id, full_name, batch_year, location_name, lat, lng")
           .eq("status", "approved")
           .not("lat", "is", null)
 
@@ -65,7 +65,7 @@ export default function AlumniMapClient() {
             id: String(profile.id),
             full_name: profile.full_name,
             batch_year: profile.batch_year,
-            location: profile.location,
+            location_name: profile.location_name,
             lat: Number(profile.lat),
             lng: Number(profile.lng),
           }))
@@ -182,7 +182,7 @@ export default function AlumniMapClient() {
                   </p>
                   <p>
                     <span className="font-medium">Location:</span>{" "}
-                    {profile.location?.trim() || "Not provided"}
+                    {profile.location_name?.trim() || "Not provided"}
                   </p>
                 </div>
               </Popup>

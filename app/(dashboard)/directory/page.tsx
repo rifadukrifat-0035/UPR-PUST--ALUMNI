@@ -5,7 +5,7 @@ type AlumniProfile = {
   id: string
   full_name: string | null
   batch_year: number | null
-  location: string | null
+  location_name: string | null
   bio: string | null
   avatar_url: string | null
 }
@@ -15,7 +15,7 @@ export default async function AlumniDirectoryPage() {
 
   const { data, error } = await supabase
     .from("profiles")
-    .select("id, full_name, batch_year, location, bio, avatar_url")
+    .select("id, full_name, batch_year, location_name, bio, avatar_url")
     .eq("status", "approved")
     .order("full_name", { ascending: true })
 
