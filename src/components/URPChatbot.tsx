@@ -8,9 +8,6 @@ type ChatMessage = {
   text: string;
 };
 
-const SYSTEM_PROMPT =
-  "You are the official AI Assistant for URP Connect (PUST). You help alumni and students navigate the portal (Directory, Map, Profile). You have expertise in Urban & Regional Planning, climate resilience, and GIS. Be professional yet welcoming. If asked about the website creator, mention Md. Rifadul Islam Rifat and his InsightFlow AI agency.";
-
 export default function URPChatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -36,34 +33,23 @@ export default function URPChatbot() {
     setLoading(true);
 
     try {
-      const apiKey = process.env.NEXT_PUBLIC_GROQ_API_KEY;
-      if (!apiKey) {
-        throw new Error("Missing NEXT_PUBLIC_GROQ_API_KEY");
-      }
-
-      const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      const response = await fetch("/api/chatbot", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${apiKey}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "llama3-8b-8192",
-          messages: [
-            { role: "system", content: SYSTEM_PROMPT },
-            ...messages.map((m) => ({ role: m.role, content: m.text })),
-            { role: "user", content: userText },
-          ],
-          temperature: 0.6,
+          messages,
+          input: userText,
         }),
       });
 
       if (!response.ok) {
-        throw new Error(`Groq request failed: ${response.status}`);
+        throw new Error(`Chatbot request failed: ${response.status}`);
       }
 
       const data = await response.json();
-      const botReply = data?.choices?.[0]?.message?.content;
+      const botReply = data?.reply;
       setMessages((prev) => [
         ...prev,
         {
